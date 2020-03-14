@@ -90,7 +90,6 @@ public:
 		if (isLeapYear())days[1] = 29;
 		return days[month - 1];
 	}
-
 	void AddMonth(int g)
 	{
 		if (isLeapYear()) days[1] = 29;
@@ -101,7 +100,9 @@ public:
 			month -= 12;
 		}
 		if (day > days[month - 1])
+		{
 			*this = *this + (days[month - 1] - day);
+		}
 	}
 	void SubstractMonths(int g)
 	{
@@ -116,7 +117,9 @@ public:
 				month = 12;
 			}
 			if (day > days[month - 1])
+			{
 				*this = *this + (days[month - 1] - day);
+			}
 		}
 	}
 	void AddYears(int g)
@@ -205,6 +208,13 @@ public:
 		}
 		return *this;
 	}
+
+	void DatePrint()
+	{
+		string arr[12] = { " січня ", " лютого "," березня "," квітня "," травня "," червня ",
+						" липня "," серпня "," вересня "," жовтня "," листопада "," грудня " };
+		cout << day << arr[month - 1] << year << " року\n";
+	}
 };
 
 
@@ -233,31 +243,31 @@ int main()
 			cout << "Введите кол-во дней для добавления: ";
 			cin >> g;
 			d1 = d1 + g;
-			d1.print();
+			d1.DatePrint();
 			break;
 		case 2:
 			cout << "Введите кол-во дней для вычитания: ";
 			cin >> g;
 			d1 = d1 - g;
-			d1.print();
+			d1.DatePrint();
 			break;
 		case 3:
 			cout << "Введите кол-во месяцев для добавления: ";
 			cin >> g;
 			d1.AddMonth(g);
-			d1.print();
+			d1.DatePrint();
 			break;
 		case 4:
 			cout << "Введите кол-во месяцев для вычитания: ";
 			cin >> g;
 			d1.SubstractMonths(g);
-			d1.print();
+			d1.DatePrint();
 			break;
 		case 5:
 			cout << "Введите кол-во лет для добавления: ";
 			cin >> g;
 			d1.AddYears(g);
-			d1.print();
+			d1.DatePrint();
 			break;
 		case 6:
 			cout << "Введите кол-во лет для вычитания: ";
