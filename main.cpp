@@ -91,58 +91,6 @@ public:
 		return days[month - 1];
 	}
 
-	/*
-	void AddDays(int g)
-	{
-		if (isLeapYear())days[1] = 29;
-		day += g;
-		while (day > days[month - 1])
-		{
-			day -= days[month - 1];
-			month++;
-			if (month > 12)
-			{
-				++year;
-				month = 1;
-			}
-		}
-	}
-	void SubstractDays(int g)
-	{
-		if (isLeapYear()) days[1] = 29;
-		while (g > 0)
-		{
-			if (g > day)
-			{
-				g -= day;
-				--month;
-				if (month < 1)
-				{
-					--year;
-					month = 12;
-				}
-				day = days[month - 1];
-			}
-			else if (day == g)
-			{
-				day -= g;
-				g = 0;
-				--month;
-				if (month < 1)
-				{
-					--year;
-					month = 12;
-				}
-				day = days[month - 1];
-			}
-			else
-			{
-				day -= g;
-				g = 0;
-			}
-		}
-	}
-	*/
 	void AddMonth(int g)
 	{
 		if (isLeapYear()) days[1] = 29;
@@ -153,25 +101,7 @@ public:
 			month -= 12;
 		}
 		if (day > days[month - 1])
-		{
 			*this = *this + (days[month - 1] - day);
-			//AddDays(days[month - 1] - day);
-		}
-		/*int days_to_add = 0;
-		int i = 0;
-		while (g > 0)
-		{
-			for (i = month; i <12; i++)
-				days_to_add += days[i];
-			g--;
-		}
-		while (g > 0)
-		{
-			for (i = 0; i < 12; i++)
-				days_to_add += days[i];
-			g--;
-		}
-		AddDays(days_to_add);*/
 	}
 	void SubstractMonths(int g)
 	{
@@ -186,10 +116,7 @@ public:
 				month = 12;
 			}
 			if (day > days[month - 1])
-			{
 				*this = *this + (days[month - 1] - day);
-				//AddDays(days[month - 1] - day);
-			}
 		}
 	}
 	void AddYears(int g)
@@ -214,10 +141,8 @@ public:
 		{
 			if (CompareDates(d2))
 				*this = *this - 1;
-			//SubstractDays(1);
 			else if (!CompareDates(d2))
 				*this = *this + 1;
-				//AddDays(1);
 			count++;
 		}
 		return count;
