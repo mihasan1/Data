@@ -34,22 +34,22 @@ public:
 		cout << day << '.' << month << '.' << year << std::endl;
 	}
 
-    bool TrueDate(int d, int m, int y)
+	bool TrueDate(int d, int m, int y)
 	{
-		if ((d < 1 || d>31) || (m < 1 || m>12) )
+		if ((d < 1 || d>dayInMonth(m)) || (m < 1 || m>12))
 		{
-			cout << "Äàòà ââåäåíà íåïðàâèëüíî" << endl;
+			cout << "Ð”Ð°Ñ‚Ð° Ð²Ð²ÐµÐ´ÐµÐ½Ð° Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾" << endl;
 			return false;
 		}
 		else return true;
 	}
 
-    bool isLeapYear()
+	bool isLeapYear()
 	{
-	    if(year%4==0)
-            return true;
-        else
-            return false;
+		if (year % 4 == 0)
+			return true;
+		else
+			return false;
 	}
 
 	int dayInMonth(int month)
@@ -59,36 +59,95 @@ public:
 		return days[month - 1];
 	}
 
-    void AddDays(int g)
-    {
-        int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
-        if (isLeapYear())days[1] = 29;
-        day+=g;
-        while(day>days[month-1])
-        {
-            day-=days[month-1];
-            month++;
-            if(month > 12)
-            {
-                ++year;
-                month=1;
-            }
-        }
-    }
-    void DecreaseDays(int g)
-    {
-        int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
-        if(isLeapYear()) days[1]=29;
-
-
-    }
+	void AddDays(int g)
+	{
+		int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+		if (isLeapYear())days[1] = 29;
+		day += g;
+		while (day > days[month - 1])
+		{
+			day -= days[month - 1];
+			month++;
+			if (month > 12)
+			{
+				++year;
+				month = 1;
+			}
+		}
+	}
+	void DecreaseDays(int g)
+	{
+		int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+		if (isLeapYear()) days[1] = 29;
+		while (g > 0)
+		{
+			if (g > day)
+			{
+				g -= day;
+				--month;
+				if (month < 1)
+				{
+					--year;
+					month = 12;
+				}
+				day = days[month - 1];
+			}
+			else if(day==g)
+			{
+				day -= g;
+				g = 0;
+				--month;
+				if (month < 1)
+				{
+					--year;
+					month = 12;
+				}
+				day = days[month - 1];
+			}
+			else
+			{
+				day -= g;
+				g = 0;
+			}
+		}
+	}
+	void AddMonth(int g)
+	{
+		int days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+		if (isLeapYear()) days[1] = 29;
+		/*month += g;
+		while (month > 12)
+		{
+			++year;
+			month -=12;
+		}
+		if (day > days[month-1])
+		{
+			AddDays(days[month-1] - day);
+		}*/
+		int days_to_add = 0;
+		int i = 0;
+		while (g > 0)
+		{
+			for (i = month - 1; i < 12; i++)
+				days_to_add += days[i];
+			g--;
+		}
+		while (g > 0)
+		{
+			for (i = 0; i < 12; i++)
+				days_to_add += days[i];
+			g--;
+		}
+		AddDays(days_to_add);
+	}
 };
 
 int main()
 {
-system("chcp 1251");
+	system("chcp 1251");
 	char data[11];
-	cout << "Ââåäèòå äàòó â ôîðìàòå 'ÄÄ.ÌÌ.ÃÃÃÃ':\n";
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð´Ð°Ñ‚Ñƒ Ð² Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ðµ 'Ð”Ð”.ÐœÐœ.Ð“Ð“Ð“Ð“':\n";
 	cin.getline(data, 11);
 	int d = 0, m = 0, y = 0;
 	string tmp = "";
@@ -127,9 +186,18 @@ system("chcp 1251");
 	else
 		return 0;
 
-    cout << "Ââåäèòå êîë-âî äíåé äëÿ äîáàâëåíèÿ: ";
-    cin >> g;
-    d1.AddDays(g);
-    d1.print();
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ð´Ð½ÐµÐ¹ Ð´Ð»Ñ Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ñ: ";
+	cin >> g;
+	d1.AddDays(g);
+	d1.print();
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ð´Ð½ÐµÐ¹ Ð´Ð»Ñ Ð²Ñ‹Ñ‡Ð¸Ñ‚Ð°Ð½Ð¸Ñ: ";
+	cin >> g;
+	d1.DecreaseDays(g);
+	d1.print();
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ð¼ÐµÑÑÑ†ÐµÐ² Ð´Ð»Ñ Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ñ: ";
+	cin >> g;
+	d1.AddMonth(g);
+	d1.print();
+
 	return 0;
 }
