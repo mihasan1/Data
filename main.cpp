@@ -91,6 +91,7 @@ public:
 		return days[month - 1];
 	}
 
+	/*
 	void AddDays(int g)
 	{
 		if (isLeapYear())days[1] = 29;
@@ -141,6 +142,7 @@ public:
 			}
 		}
 	}
+	*/
 	void AddMonth(int g)
 	{
 		if (isLeapYear()) days[1] = 29;
@@ -152,7 +154,8 @@ public:
 		}
 		if (day > days[month - 1])
 		{
-			AddDays(days[month - 1] - day);
+			*this = *this + (days[month - 1] - day);
+			//AddDays(days[month - 1] - day);
 		}
 		/*int days_to_add = 0;
 		int i = 0;
@@ -184,7 +187,8 @@ public:
 			}
 			if (day > days[month - 1])
 			{
-				AddDays(days[month - 1] - day);
+				*this = *this + (days[month - 1] - day);
+				//AddDays(days[month - 1] - day);
 			}
 		}
 	}
@@ -209,9 +213,11 @@ public:
 		while (!(day == d2.day && month == d2.month && year == d2.year))
 		{
 			if (CompareDates(d2))
-				SubstractDays(1);
+				*this = *this - 1;
+			//SubstractDays(1);
 			else if (!CompareDates(d2))
-				AddDays(1);
+				*this = *this + 1;
+				//AddDays(1);
 			count++;
 		}
 		return count;
@@ -220,6 +226,59 @@ public:
 	float countOfMonths(Date d2)
 	{
 		return (countDays(d2)/30);
+	}
+
+	Date operator+(int g)
+	{
+		if (isLeapYear())days[1] = 29;
+		day += g;
+		while (day > days[month - 1])
+		{
+			day -= days[month - 1];
+			month++;
+			if (month > 12)
+			{
+				++year;
+				month = 1;
+			}
+		}
+		return *this;
+	}
+	Date operator-(int g)
+	{
+		if (isLeapYear()) days[1] = 29;
+		while (g > 0)
+		{
+			if (g > day)
+			{
+				g -= day;
+				--month;
+				if (month < 1)
+				{
+					--year;
+					month = 12;
+				}
+				day = days[month - 1];
+			}
+			else if (day == g)
+			{
+				day -= g;
+				g = 0;
+				--month;
+				if (month < 1)
+				{
+					--year;
+					month = 12;
+				}
+				day = days[month - 1];
+			}
+			else
+			{
+				day -= g;
+				g = 0;
+			}
+		}
+		return *this;
 	}
 };
 
@@ -248,13 +307,13 @@ int main()
 		case 1:
 			cout << "Введите кол-во дней для добавления: ";
 			cin >> g;
-			d1.AddDays(g);
+			d1 = d1 + g;
 			d1.print();
 			break;
 		case 2:
 			cout << "Введите кол-во дней для вычитания: ";
 			cin >> g;
-			d1.SubstractDays(g);
+			d1 = d1 - g;
 			d1.print();
 			break;
 		case 3:
